@@ -1,0 +1,15 @@
+{
+  "port": 8765,
+  "bukaBrowser": true,
+  "konversi": {
+    "preset": "logo",
+    "jumlahWarna": 16,
+    "kehalusan": 50,
+    "buangBintik": 4,
+    "hapusLatarPutih": false,
+    "formatUnduhan": "svg",
+    "garisLurus": true,
+    "bandingkanRender": true,
+    "ai": "none"
+  }
+}

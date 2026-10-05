@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B'night Vector Studio</title>
+<meta name="description" content="Ubah logo dan ilustrasi menjadi vektor. Atur warna, haluskan kurva, bandingkan hasil, lalu unduh SVG atau EPS.">
+<link rel="icon" type="image/svg+xml" href="assets/icon-bvs.svg">
+<link rel="stylesheet" href="style.css"><script src="local-settings.js" defer></script><script src="i18n.js" defer></script><script src="advanced.js" defer></script><script src="app.js" defer></script><script src="batch.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./" aria-label="BNIGHT Vector Studio"><img class="brand-logo" src="assets/logo-bvs.svg" alt="BNIGHT Vector Studio"></a><div class="top-right"><span class="privacy"><span class="lock">▣</span> Diproses di perangkatmu</span><div class="language-picker" role="group" aria-label="Pilihan bahasa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5h14M5 17.5h14"/></svg><button type="button" data-language="id" aria-pressed="true" title="Bahasa Indonesia">ID</button><button type="button" data-language="en" aria-pressed="false" title="English">EN</button></div><span class="version">WEB V2</span></div></header>
+<main>
+<div class="heading"><div><div class="eyebrow">DARI BITMAP KE VEKTOR</div><h1>DASHBOARD</h1><p>Unggah gambar. Atur detail. Buat siap diperbesar.</p></div><button class="secondary" id="new-file">＋ Gambar baru</button></div>
+<div class="workspace">
+<aside class="controls">
+<div class="section-title"><h2>Gambar sumber</h2></div>
+<button id="dropzone" class="dropzone"><img class="upload-symbol" src="assets/upload-icon.svg" alt="" aria-hidden="true"><strong>Pilih atau tarik gambar</strong><span>JPG, PNG, WebP · Maks. 15 MB</span></button>
+<p class="hint">Pilih satu atau beberapa gambar sekaligus.</p><input type="file" id="file-input" multiple accept="image/jpeg,image/png,image/webp" hidden>
+<div class="file-card" id="file-card" hidden><img id="file-thumb" alt=""><div><strong id="file-name"></strong><span id="file-meta"></span></div></div>
+<button class="text-button" id="use-demo">Coba logo BNIGHT</button>
+<section id="batch-panel" class="batch-panel" hidden><h2>Konversi banyak gambar</h2><p class="hint">Semua gambar memakai pengaturan saat ini. Maks. 15 MB per gambar.</p><div id="batch-list"></div><button id="batch-convert" class="secondary">Konversi semua</button><button id="batch-download" class="secondary" disabled>Unduh ZIP</button></section><div class="divider"></div>
+<div class="section-title"><h2>Atur hasil</h2></div><div class="history-actions"><button class="secondary" id="undo-settings" disabled>↶ Undo</button><button class="secondary" id="redo-settings" disabled>↷ Redo</button></div>
+<label class="field-label" for="ai-mode" hidden>Pembersihan gambar</label>
+<select id="ai-mode" hidden><option value="none">Asli · tanpa AI</option></select>
+<p class="hint">Versi web · konversi di browser tanpa AI. Gambar tetap di perangkatmu.</p>
+<label class="field-label" for="preset">Karakter gambar</label>
+<select id="preset"><option value="logo">Logo &amp; lettering</option><option value="detail">Ilustrasi detail</option><option value="mono">Hitam &amp; putih</option><option value="custom">Pengaturan sendiri</option></select>
+<div class="range-label"><label for="colors">Jumlah warna</label><output id="colors-value">16</output></div><input type="range" id="colors" min="1" max="64" value="16" step="1"><div class="range-captions"><span>Sederhana</span><span>Lebih kaya</span></div>
+<p class="hint">1 warna menghasilkan siluet hitam dengan latar transparan.</p><div class="range-label"><label for="smooth">Kehalusan kurva</label><output id="smooth-value">50%</output></div><input type="range" id="smooth" min="0" max="100" value="50" step="5"><div class="range-captions"><span>Ikuti detail</span><span>Lebih halus</span></div>
+<div class="range-label"><label for="detail">Buang bintik kecil</label><output id="detail-value">4 px</output></div><input type="range" id="detail" min="0" max="24" value="4"><p class="hint">Nilai tinggi bisa menghilangkan ornamen kecil.</p>
+<label class="check-row"><input type="checkbox" id="remove-bg"><span>Hapus latar putih</span></label>
+<label class="check-row"><input type="checkbox" id="straight" checked><span>Pertahankan garis lurus</span></label>
+<label class="check-row"><input type="checkbox" id="optimize" checked><span>Bandingkan hasil render</span></label>
+<p class="hint">Tepi subpiksel, sudut tajam, dan sambungan Bézier aktif. Tiga hasil dibandingkan saat pemeriksaan render aktif.</p>
+<details class="advanced-controls"><summary>Koreksi &amp; bentuk</summary>
+<label class="field-label" for="deskew">Koreksi kemiringan (°)</label><input id="deskew" type="number" min="-45" max="45" step="0.5" value="0">
+<label class="check-row"><input id="perspective" type="checkbox"><span>Koreksi perspektif</span></label>
+<p class="hint">Tentukan empat sudut bidang pada gambar sumber (%). Urutan: kiri atas, kanan atas, kanan bawah, kiri bawah.</p>
+<div class="corner-grid">
+<label>Kiri atas <input id="tl-x" type="number" min="0" max="100" value="0" aria-label="Kiri atas X"><input id="tl-y" type="number" min="0" max="100" value="0" aria-label="Kiri atas Y"></label>
+<label>Kanan atas <input id="tr-x" type="number" min="0" max="100" value="100" aria-label="Kanan atas X"><input id="tr-y" type="number" min="0" max="100" value="0" aria-label="Kanan atas Y"></label>
+<label>Kanan bawah <input id="br-x" type="number" min="0" max="100" value="100" aria-label="Kanan bawah X"><input id="br-y" type="number" min="0" max="100" value="100" aria-label="Kanan bawah Y"></label>
+<label>Kiri bawah <input id="bl-x" type="number" min="0" max="100" value="0" aria-label="Kiri bawah X"><input id="bl-y" type="number" min="0" max="100" value="100" aria-label="Kiri bawah Y"></label>
+</div><p class="hint">X = horizontal, Y = vertikal. Koreksi diterapkan saat konversi.</p>
+<label class="check-row"><input id="smooth-arcs" type="checkbox" checked><span>Haluskan busur lengkung</span></label><p class="hint">Kurangi gelombang piksel dan rapikan bagian yang mendekati busur lingkaran. Matikan untuk mengikuti tepi asli.</p><label class="field-label" for="corner-mode">Karakter sudut</label><select id="corner-mode"><option value="auto">Otomatis</option><option value="sharp">Sudut tajam</option><option value="round">Sudut membulat</option></select>
+<label class="check-row"><input id="detect-shapes" type="checkbox"><span>Rapikan bentuk geometris</span></label><p class="hint">Deteksi lingkaran, elips, dan persegi yang sejajar sumbu. Matikan jika detail logo berubah.</p>
+</details><button class="primary convert" id="convert" disabled><span>◇</span> Buat vektor</button><button id="cancel" class="text-button" hidden>Batalkan proses</button>
+<p class="engine-note">BNIGHT Geometry 2 · sepenuhnya lokal<br> Gradasi masih berupa bidang warna.</p>
+</aside>
+<section class="editor" aria-label="Pratinjau gambar">
+<div class="editor-toolbar"><div class="tabs" role="tablist" aria-label="Mode pratinjau"><button role="tab" aria-selected="true" id="tab-compare" data-mode="compare">Bandingkan</button><button role="tab" aria-selected="false" id="tab-original" data-mode="original">Asli</button><button role="tab" aria-selected="false" id="tab-vector" data-mode="vector">Vektor</button></div><div class="zoom"><button id="zoom-out" aria-label="Perkecil">−</button><button id="zoom-reset" aria-label="Atur ulang zoom">100%</button><button id="zoom-in" aria-label="Perbesar">＋</button></div></div>
+<div class="canvas" id="canvas" data-mode="compare">
+<div class="canvas-label left">GAMBAR ASLI <span>RASTER</span></div><div class="canvas-label right">HASIL KONVERSI <span>VEKTOR</span></div>
+<div class="image-viewport" id="viewport"><div class="image-stage" id="stage"><img id="original-image" draggable="false" alt="Gambar asli"><div class="vector-overlay" id="vector-overlay"><img id="vector-image" draggable="false" alt="Hasil vektorisasi"></div></div></div>
+<div id="empty" class="empty"><span>◇</span><h2>Mulai dari sebuah gambar.</h2><p>Logo, lettering, atau ilustrasi favoritmu.</p></div>
+<div class="result-placeholder" id="result-placeholder" hidden><span>HASIL VEKTOR</span><p>Siap setelah kamu klik<br><strong>Buat vektor</strong></p></div>
+<div class="split-line" id="split-line" hidden><span>‹ ›</span></div><input id="compare-slider" class="compare-slider" aria-label="Geser perbandingan gambar asli dan vektor" type="range" min="0" max="100" value="50" hidden>
+<div class="busy-overlay" id="busy" hidden><span class="spinner"></span><strong id="progress-label">Menyusun kurva dan warna…</strong><span>Gambar tetap di perangkatmu.</span></div>
+<div class="canvas-footnote">Scroll untuk zoom · Tarik gambar saat diperbesar untuk menggeser.</div>
+</div>
+<div class="statusbar"><span id="status" role="status" aria-live="polite">Pilih gambar untuk mulai.</span><span id="stats"></span></div>
+<div class="export-bar"><div><h2>Siap untuk langkah berikutnya.</h2><p>Vektor yang dapat diedit di aplikasi desainmu.</p></div><div class="export-actions"><label class="sr-only" for="format">Format unduhan</label><select id="format"><option value="svg">SVG</option><option value="eps">EPS</option></select><button class="secondary" id="color-zip" disabled>ZIP per warna (SVG)</button><button class="secondary" id="color-groups" disabled>SVG bergrup warna</button><button class="primary" id="download" disabled>↓ Unduh vektor</button></div></div>
+</section>
+</div>
+<footer><span>BNIGHT <strong>VECTOR STUDIO</strong></span><p>Periksa huruf dan ornamen sebelum produksi. Hasil belum setara EPS acuan.</p><div class="footer-links"><a class="website-link" href="https://bnightstudio.infinityfreeapp.com/" target="_blank" rel="noopener noreferrer" aria-label="Website B'night Studio" title="Website B'night Studio"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6h14M5 18h14"/></svg></a><a class="instagram-link" href="https://www.instagram.com/bnight_studio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @bnight_studio"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>@bnight_studio</span></a><a href="credits.html" target="_blank" rel="noopener">Mesin &amp; lisensi</a></div></footer>
+</main><noscript>Aktifkan JavaScript untuk memproses gambar di browser.</noscript>
+</body></html>
+
+
+
+
+
+
+
+
+
+

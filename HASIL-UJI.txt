@@ -1,0 +1,23 @@
+HASIL PEMERIKSAAN V2 - 3 Oktober 2026
+
+Uji geometri sintetis: LULUS
+Lingkaran: 4 kurva kubik, 0 sudut; selisih arah tangen <0,000001 derajat.
+Persegi: 4 garis lurus, 4 sudut terjaga.
+Gabungan garis-busur: 2 garis, sambungan halus selaras.
+Interpolasi subpiksel, penutupan kontur, dan batas error sampel: lulus.
+Toleransi pengujian 0,45 piksel; max error sampel lingkaran 0,3981,
+persegi 0,1392, garis-busur 0,2881.
+
+Browser lokal: konversi logo tanpa AI dengan tiga kandidat selesai 2,2 detik;
+491 garis dan 6709 kurva pada input/default browser ini. Ekspor EPS berhasil.
+Real-ESRGAN resmi berhasil menghasilkan gambar 802 x 628 dari logo 401 x 314
+pada NVIDIA GT 1030 2GB. Opsi AI bergantung dukungan Vulkan/driver.
+
+Render contoh di folder contoh-hasil memakai resize Sharp dan satu kandidat,
+sehingga jumlah node dapat berbeda dari browser. Kurva utama lebih rapi,
+tetapi tepi kecil masih dapat berartefak dan warna gradasi masih bertingkat.
+Tidak ada klaim setara Vectorizer.ai atau EPS asli. Referensi EPS tidak
+menggantikan hasil algoritma. DiffVG/LIVE/Im2Vec belum diintegrasikan.
+
+SHA256 executable resmi bnight-ai.exe:
+07E49F7CBB4EDE01AE4DD4C399D3A7E5846E3D2085C3128EFF881E55CB7B1A0C

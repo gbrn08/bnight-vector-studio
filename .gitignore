@@ -1,0 +1,4 @@
+backups/
+.run/
+*.pid
+ai/

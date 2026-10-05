@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><title>Curve regression tests</title><pre id="results"></pre><script src="../geometry.js"></script><script>
+const G=BnightGeometry,tests=[];function check(name,condition){tests.push({name,pass:!!condition});}
+const noisy=Array.from({length:161},(_,i)=>{const a=i/160*Math.PI/2,r=100+(i===0||i===160?0:.3*Math.sin(i*1.7));return [r*Math.cos(a),r*Math.sin(a)];});
+const arc=G.fitCircularArc(noisy,.7,[0,1],[1,0]);check('Noisy circular arc recognized',arc&&arc.length<=3);
+check('Endpoints preserved',arc&&Math.hypot(...arc[0].c[0].map((x,i)=>x-noisy[0][i]))<1e-8&&Math.hypot(...arc.at(-1).c[3].map((x,i)=>x-noisy.at(-1)[i]))<1e-8);
+let radial=0;if(arc)for(const s of arc)for(let t=0;t<=1;t+=.025)radial=Math.max(radial,Math.abs(Math.hypot(...G.bez(s.c,t))-100));check('Circular radius variation below 0.1 px',radial<.1);
+const bent=noisy.map((p,i)=>[p[0]+8*Math.sin(i/160*Math.PI*3),p[1]]);check('Noncircular shape rejected',G.fitCircularArc(bent,.7)===null);
+const straight=Array.from({length:50},(_,i)=>[i,0]);check('Straight line rejected as arc',G.fitCircularArc(straight,.7)===null);
+const opts={scale:1,step:.85,cornerAngle:55,straight:true,tolerance:.6,smooth:70,smoothArcs:true};
+const square=G.resample([[0,0],[100,0],[100,100],[0,100]],.85),fit=G.fitLoop(square,opts);check('Square corners preserved',fit.corners===4);check('Finite closed path',!G.pathData(fit.segments).match(/NaN|Infinity/)&&G.pathData(fit.segments).endsWith('Z'));
+document.getElementById('results').textContent=JSON.stringify({tests,radial},null,2);
+</script>
+

@@ -1,0 +1,110 @@
+BNIGHT VECTOR STUDIO V2 - LOKAL WINDOWS
+
+CARA MENJALANKAN
+1. Ekstrak seluruh ZIP ke folder biasa (jangan jalankan di dalam ZIP).
+2. Klik dua kali MULAI.bat. Browser membuka http://127.0.0.1:8765/.
+3. Biarkan jendela peluncur terbuka; tutup untuk mematikan server.
+Tidak perlu Python, Node.js, akun atau API key. Windows 10/11 dan browser
+modern diperlukan. Semua pemrosesan lokal, tanpa mengirim gambar ke internet.
+Jangan membuka web/index.html langsung. Server hanya di 127.0.0.1.
+
+CARA MEMAKAI DAN SETTING AWAL
+Pilih JPG/PNG/WebP (maksimal 15 MB, 40 megapiksel), lalu Buat vektor.
+Mulai dengan Logo & lettering, 16 warna, kehalusan 50, buang bintik 4.
+Aktifkan Pertahankan garis lurus dan Bandingkan hasil render.
+Untuk ornamen kecil: buang bintik 0-1 dan kehalusan 25-35.
+Periksa tab Vektor dengan zoom, lalu pilih SVG atau EPS dan Unduh vektor.
+Perubahan setting memerlukan konversi ulang. File masuk folder unduhan browser.
+
+REAL-ESRGAN OPSIONAL
+Pilih Pembersihan gambar > Real-ESRGAN 2x lokal untuk menjalankan model AI
+bundel. Memerlukan GPU/driver Vulkan; sudah berhasil diuji pada GT 1030 2GB.
+Model realesr-animevideov3 x2 cocok dicoba untuk ilustrasi, tetapi dapat
+mengubah huruf dan ornamen. Bandingkan dengan mode Asli; AI bukan selalu lebih baik.
+Jika GPU tidak mendukung, gunakan Asli tanpa AI. Tidak perlu mengunduh model lagi.
+Masukan AI dibatasi sisi 1000 px; tracing dibatasi sisi 1280 px.
+Mode Asli memperbesar gambar kecil sampai 2x, maksimal sisi 1280 px.
+Batas waktu AI 180 detik, tracing 180 detik. Pembatalan menghentikan tracing
+segera; proses AI yang sudah berjalan dapat tetap selesai di server lokal.
+
+METODE YANG BENAR-BENAR AKTIF
+- Deteksi rentang lurus dengan batas penyimpangan dan uji arah.
+- Marching squares dengan interpolasi subpiksel pada mask warna lunak.
+- Deteksi sudut beberapa skala, terpisah dari rentang lengkung.
+- Fitting Bezier kubik least squares; tangen bersama di sambungan halus.
+  Sudut yang terdeteksi tetap boleh patah sesuai bentuk aslinya.
+- Penggabungan kurva diterima hanya bila lolos batas error sampel kontur.
+- Bandingkan hasil render mencoba tiga toleransi dan memilih error piksel
+  terkecil. Ini optimasi ringan, BUKAN DiffVG, LIVE, atau Im2Vec.
+ImageTracer dipakai untuk kuantisasi warna; geometri V2 memakai geometry.js.
+
+BATAS KUALITAS
+Toleransi default 0,49 piksel sumber terhadap sampel kontur hasil praproses,
+bukan jaminan jarak maksimum terhadap semua piksel JPG asli. Ketelitian
+subpiksel adalah estimasi dari warna, bukan pemulihan detail yang hilang.
+Gradasi menjadi bidang warna bertingkat. Belum ada gradien SVG/EPS otomatis,
+graf batas bersama, deteksi lingkaran sempurna, atau model Vectorizer.ai.
+Lapisan bertumpuk mengurangi celah, tetapi fringe dan artefak masih mungkin.
+Transparansi masukan diratakan ke putih. Hapus latar putih juga menghapus
+bidang putih di dalam logo. Periksa hasil sebelum produksi/cetak.
+EPS referensi pengguna tidak dipakai sebagai pengganti hasil tracing.
+
+SETTING PERMANEN
+Edit pengaturan.json di Notepad, simpan, restart peluncur dan reload browser.
+port: 1024-65535, default 8765; ganti bila bentrok (misalnya 8877).
+bukaBrowser: true/false.
+Di bagian konversi:
+preset: logo/detail/mono/custom; jumlahWarna: 1-64; kehalusan: 0-100;
+buangBintik: 0-24; hapusLatarPutih: true/false; formatUnduhan: svg/eps;
+garisLurus: true/false; bandingkanRender: true/false; ai: none/realesrgan.
+Pilih custom untuk kombinasi sendiri. Memilih preset di UI mengganti angka.
+
+ISI PAKET
+MULAI.bat dan server-v2.ps1: peluncur/server lokal Windows.
+pengaturan.json: konfigurasi awal. web/: sumber website dan mesin geometri.
+ai/: executable resmi Real-ESRGAN NCNN (dinamai bnight-ai.exe), model dan lisensi.
+contoh-hasil/: hasil tracing logo dan render PNG, 16 warna/50/4, tanpa
+pembandingan tiga kandidat; V1 disertakan untuk membandingkan mesin lama.
+HASIL-UJI.txt: hasil pemeriksaan. web/credits.html: metode dan atribusi.
+
+Jika halaman tidak terbuka, pastikan peluncur berjalan dan port bebas.
+Jika AI gagal, pakai mode Asli atau perbarui driver GPU dari vendor perangkat.
+Jangan jalankan sebagai administrator untuk mengatasi port bentrok.
+
+KONVERSI BANYAK GAMBAR DAN UNDO/REDO
+Pilih beberapa JPG/PNG/WebP sekaligus atau tarik semuanya ke area unggah.
+Klik Konversi semua untuk memproses antrean dengan pengaturan yang sama.
+Hasil dapat diunduh per gambar atau sebagai ZIP, mengikuti format SVG/EPS.
+File gagal ditandai dan antrean melanjutkan file berikutnya. Batalkan proses
+menghentikan antrean; hasil yang sudah selesai tetap tersedia.
+Antrean dan hasil hanya tersimpan selama halaman masih terbuka.
+Jumlah warna sekarang 1-64. Nilai 1 menghasilkan siluet hitam transparan.
+Undo/Redo mengembalikan pengaturan, bukan hasil konversi. Satu perubahan slider
+saat dilepas dihitung satu langkah. Shortcut: Ctrl+Z, Ctrl+Y/Ctrl+Shift+Z
+saat fokus tidak berada pada kolom input. Maksimal 100 langkah Undo.
+
+KOREKSI, BENTUK, DAN PEMISAHAN WARNA
+Buka Koreksi & bentuk untuk meluruskan gambar (-45 sampai 45 derajat),
+mengoreksi perspektif melalui empat sudut X/Y dalam persen, serta memilih
+sudut Otomatis, Tajam, atau Membulat. Nilai yang tidak valid ditolak.
+Perspektif diterapkan sebelum rotasi. Preview raster setelah konversi
+menampilkan gambar yang sudah dikoreksi agar sejajar dengan hasil vektor.
+Koreksi manual menggunakan raster dengan sisi awal maksimal 1280 piksel.
+Pengaturan ini ikut Undo/Redo dan dipakai untuk seluruh gambar dalam batch.
+Rapikan bentuk geometris bersifat opsional, untuk lingkaran, elips, dan
+persegi/persegi panjang yang sejajar sumbu. Bentuk miring dan bentuk kompleks
+masih mengikuti tracing biasa. Elips diekspor sebagai empat kurva kubik.
+SVG bergrup warna mempertahankan susunan lapisan asli.
+ZIP per warna (SVG) menghasilkan satu SVG per warna, dengan ukuran kanvas
+sama. SVG mask menjaga tampilan area tumpang tindih; untuk mesin cutting,
+mask perlu dijadikan path melalui editor vektor terlebih dahulu.
+Ekspor per warna berlaku untuk hasil yang sedang ditampilkan, bukan seluruh
+antrean. Tombol Unduh ZIP pada antrean tetap mengekspor satu file per gambar.
+
+PERAPIAN BUSUR
+Haluskan busur lengkung aktif secara default pada Koreksi & bentuk.
+Fitur ini mengurangi gelombang kecil kontur, mempertahankan sudut terdeteksi,
+dan mengganti bagian yang mendekati lingkaran dengan rangkaian kurva busur.
+Bentuk yang menyimpang dari lingkaran tetap memakai fitting biasa.
+Kehalusan kurva mengatur kekuatan perapian. Setelah mengubah pengaturan,
+klik Buat vektor kembali. Matikan Haluskan busur lengkung untuk tepi asli.
